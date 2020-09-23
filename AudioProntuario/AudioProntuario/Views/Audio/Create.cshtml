@@ -1,0 +1,73 @@
+﻿@model AudioProntuario.Models.Audio
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Audio</h4>
+
+        <button type="button" id='btn'>Start</button>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.js"
+            integrity="sha256-tA8y0XqiwnpwmOIl3SGAcFl2RvxHjA8qp0+1uCGmRmg="
+            crossorigin="anonymous"></script>
+    <script>
+    	$(function(){
+    		navigator
+    		    .mediaDevices
+    			.getUserMedia({ audio: true })
+    			.then( stream => {
+    				mediaRecorder = new MediaRecorder(stream)
+    				let chunks = []
+    				mediaRecorder.ondataavailable = data => {
+    					chunks.push(data.data)
+    				}
+    				mediaRecorder.onstop = () => {
+    					const blob = new Blob(chunks, {type: 'audio/ogg; code=opus'})
+    					const reader = new window.FileReader()
+    					reader.readAsDataURL(blob)
+    					reader.onloadend = () => {
+    				    //Colocar o POST no comando abaixo
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("SalvarAudio")',
+                                data: {
+                                    'base64': reader.result
+                                }
+                            })
+    					}
+    				}
+    			}, err => {
+    				alert('Você deve permitir o audio')
+    			})
+    			$('#btn').click(function(){
+    				if($(this).text() === 'Start'){
+    					mediaRecorder.start()
+    					$(this).text('Stop')
+    				}
+    				else{
+    					mediaRecorder.stop()
+    					$(this).text('Start')
+    				}
+    			})
+    	})
+    </script>
+}

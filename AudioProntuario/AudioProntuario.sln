@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioProntuario", "AudioProntuario\AudioProntuario.csproj", "{4E121145-E56E-4FCD-8429-F243B1C47FBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E121145-E56E-4FCD-8429-F243B1C47FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E121145-E56E-4FCD-8429-F243B1C47FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E121145-E56E-4FCD-8429-F243B1C47FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E121145-E56E-4FCD-8429-F243B1C47FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D3965B85-21AA-4096-B8E8-E8056E922563}
+	EndGlobalSection
+EndGlobal
