@@ -45,59 +45,7 @@ namespace AudioProntuario.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Audio/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Audio/Create
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idAudio,AudioProntuario")] Audio audio)
-        {
-            if (ModelState.IsValid)
-            {
-                db.AudioDB.Add(audio);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(audio);
-        }
-
-        // GET: Audio/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Audio audio = db.AudioDB.Find(id);
-            if (audio == null)
-            {
-                return HttpNotFound();
-            }
-            return View(audio);
-        }
-
-        // POST: Audio/Edit/5
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idAudio,AudioProntuario")] Audio audio)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(audio).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(audio);
-        }
+       
 
         // GET: Audio/Delete/5
         public ActionResult Delete(int? id)
