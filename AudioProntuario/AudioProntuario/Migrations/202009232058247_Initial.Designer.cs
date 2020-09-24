@@ -13,7 +13,7 @@ namespace AudioProntuario.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202009221935071_Initial"; }
+            get { return "202009232058247_Initial"; }
         }
         
         string IMigrationMetadata.Source

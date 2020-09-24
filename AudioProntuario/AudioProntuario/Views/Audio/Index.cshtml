@@ -6,28 +6,85 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AudioProntuario)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AudioProntuario)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idAudio }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idAudio }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idAudio })
-        </td>
-    </tr>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Audio</h4>
+
+        <button type="button" id='btn'>Novo Audio</button>
+
+    </div>
 }
 
-</table>
+<div class="col-md-10">
+
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-11">
+            @{
+                //var base64 = Convert.ToBase64String(item.AudioProntuario);
+
+            }
+            <audio src="@item.AudioProntuario" controls></audio> <a class="btn btn-danger" href="@Url.Action("Delete", "Audio", new { id = item.idAudio })"> Deletar</a>
+            <br />
+        </div>
+    }
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        function load() {
+            setTimeout("window.open(self.location, '_self');", 300);
+        }
+    	$(function(){
+    		navigator
+    		    .mediaDevices
+    			.getUserMedia({ audio: true })
+    			.then( stream => {
+    				mediaRecorder = new MediaRecorder(stream)
+    				let chunks = []
+    				mediaRecorder.ondataavailable = data => {
+    					chunks.push(data.data)
+    				}
+    				mediaRecorder.onstop = () => {
+    					const blob = new Blob(chunks, {type: 'audio/ogg; code=opus'})
+    					const reader = new window.FileReader()
+                        reader.readAsDataURL(blob)
+    					reader.onloadend = () => {
+    				    //Colocar o POST no comando abaixo
+                            const audio = document.createElement('audio')
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("SalvarAudio")',
+                                data: {
+                                    'base64': reader.result
+                                }
+                            })
+                            load()
+    					}
+    				}
+    			}, err => {
+    				alert('Você deve permitir o audio')
+    			})
+    			$('#btn').click(function(){
+    				if($(this).text() === 'Novo Audio'){
+    					mediaRecorder.start()
+                        $(this).text('Parar')
+    				}
+    				else{
+    					mediaRecorder.stop()
+                        $(this).text('Novo Audio')
+    				}
+    			})
+    	})
+    </script>
+}

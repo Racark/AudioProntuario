@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using AudioProntuario.DAL;
@@ -22,32 +24,25 @@ namespace AudioProntuario.Controllers
         }
 
         // GET: Audio/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Audio audio = db.AudioDB.Find(id);
-            if (audio == null)
-            {
-                return HttpNotFound();
-            }
-            return View(audio);
-        }
-
         [HttpPost]
         public ActionResult SalvarAudio(string base64)
         {
             Audio audio = new Audio();
-            Convert.FromBase64String(base64);
 
-            audio.AudioProntuario = base64;
+            try
+            {
 
-            db.AudioDB.Add(audio);
+                audio.AudioProntuario = base64;
+                db.AudioDB.Add(audio);
+            }
+            catch
+            {
+                throw;
+            }
+
             db.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         // GET: Audio/Create
@@ -107,26 +102,10 @@ namespace AudioProntuario.Controllers
         // GET: Audio/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Audio audio = db.AudioDB.Find(id);
-            if (audio == null)
-            {
-                return HttpNotFound();
-            }
-            return View(audio);
-        }
-
-        // POST: Audio/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Audio audio = db.AudioDB.Find(id);
-            db.AudioDB.Remove(audio);
+            Audio guia = db.AudioDB.Find(id);
+            db.AudioDB.Remove(guia);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

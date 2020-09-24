@@ -12,7 +12,7 @@
                 c => new
                     {
                         idAudio = c.Int(nullable: false, identity: true),
-                        AudioProntuario = c.String(),
+                        AudioProntuario = c.Binary(),
                     })
                 .PrimaryKey(t => t.idAudio);
             
