@@ -34,7 +34,7 @@
             <div>
                 <div class="btn btn-info" onclick="tocaAudio(@item.idAudio)">
                     <p>Audio @item.idAudio</p>
-                    <audio id="@item.idAudio" controls></audio>
+                    <audio id="@item.idAudio" controls autoplay></audio>
                 </div>
                 <a class="btn btn-danger" href="@Url.Action("Delete", "Audio", new { id = item.idAudio })"> Deletar</a>
             </div>
@@ -153,6 +153,10 @@
                         pantalla.style.visibility = "visible";
                         $('#btnStart').text('Save');
                         document.getElementById("btnStop").style.visibility = "visible";
+
+                        setTimeout(function () {
+                            mediaRecorder.stop();
+                        }, 420000)
 
                     }, err => {
                         alert('Voce deve permitir o audio')
