@@ -88,5 +88,5 @@ C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario
 C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.csproj.CopyComplete
 C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.dll
 C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.pdb
-C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.Migrations.Initial.resources
+C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.Migrations.Timers.resources
 C:\Users\Dennys\Desktop\Consultorio\Aplicações\AudioProntuario\AudioProntuario2.0\AudioProntuario\AudioProntuario\obj\Debug\AudioProntuario.csproj.GenerateResource.cache

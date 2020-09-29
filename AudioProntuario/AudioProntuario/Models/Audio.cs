@@ -12,5 +12,9 @@ namespace AudioProntuario.Models
         public int idAudio { get; set; }
 
         public string AudioProntuario { get; set; }
+
+        public string duracao { get; set; }
+
+        public string horario { get; set; }
     }
 }

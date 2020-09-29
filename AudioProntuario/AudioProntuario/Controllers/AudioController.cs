@@ -23,15 +23,35 @@ namespace AudioProntuario.Controllers
             return View(db.AudioDB.ToList());
         }
 
-        // GET: Audio/Details/5
-        [HttpPost]
-        public ActionResult SalvarAudio(string base64)
+        [HttpGet]
+        public JsonResult TocarAudio(int id)
         {
             Audio audio = new Audio();
 
             try
             {
+                audio = db.AudioDB.Find(id);
+            }
 
+            catch
+            {
+                throw;
+            }
+
+            return Json(audio.AudioProntuario, JsonRequestBehavior.AllowGet);
+
+        }
+
+        // POST
+        [HttpPost]
+        public ActionResult SalvarAudio(string base64, string duracao, string hora)
+        {
+            Audio audio = new Audio();
+
+            try
+            {
+                audio.duracao = duracao;
+                audio.horario = hora;
                 audio.AudioProntuario = base64;
                 db.AudioDB.Add(audio);
             }

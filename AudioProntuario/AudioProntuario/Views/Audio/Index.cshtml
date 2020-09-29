@@ -11,13 +11,14 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Audio</h4>
+<div >
+        
+        <button type="button" id="btnStop" onclick="stop();">Stop</button><div id="screen">"00:00"</div><button type="button" id='btnStart' onclick="start();">Novo Audio</button>
 
-        <button type="button" id='btn'>Novo Audio</button>
-
-    </div>
+</div>
 }
+
+<br/>
 
 <div class="col-md-10">
 
@@ -29,8 +30,18 @@
                 //var base64 = Convert.ToBase64String(item.AudioProntuario);
 
             }
-            <audio src="@item.AudioProntuario" controls></audio> <a class="btn btn-danger" href="@Url.Action("Delete", "Audio", new { id = item.idAudio })"> Deletar</a>
-            <br />
+
+            <div>
+                <div class="btn btn-info" onclick="tocaAudio(@item.idAudio)">
+                    <p>Audio @item.idAudio</p>
+                    <audio id="@item.idAudio" controls></audio>
+                </div>
+                <a class="btn btn-danger" href="@Url.Action("Delete", "Audio", new { id = item.idAudio })"> Deletar</a>
+            </div>
+
+
+
+            
         </div>
     }
 
@@ -41,50 +52,131 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 
-    <script>
+<script>
+
+    window.onload = function () {
+        pantalla = document.getElementById("screen");
+        document.getElementById("screen").style.visibility = "hidden";
+        document.getElementById("btnStop").style.visibility = "hidden";
+    }
+
+    function cronometro() {
+        timeActual = new Date();
+        acumularTime = timeActual - timeInicial;
+        acumularTime2 = new Date();
+        acumularTime2.setTime(acumularTime);
+        ss = acumularTime2.getSeconds();
+        mm = acumularTime2.getMinutes();
+        if (ss < 10) { ss = "0" + ss; }
+        if (mm < 10) { mm = "0" + mm; }
+        pantalla.innerHTML = mm + " : " + ss
+    }
+
         function load() {
             setTimeout("window.open(self.location, '_self');", 500);
         }
-    	$(function(){
-    		navigator
-    		    .mediaDevices
-    			.getUserMedia({ audio: true })
-    			.then( stream => {
-    				mediaRecorder = new MediaRecorder(stream)
-    				let chunks = []
-    				mediaRecorder.ondataavailable = data => {
-    					chunks.push(data.data)
-    				}
-    				mediaRecorder.onstop = () => {
-    					const blob = new Blob(chunks, {type: 'audio/ogg; code=opus'})
-    					const reader = new window.FileReader()
-                        reader.readAsDataURL(blob)
-    					reader.onloadend = () => {
-    				    //Colocar o POST no comando abaixo
-                            const audio = document.createElement('audio')
-                            $.ajax({
-                                type: 'POST',
-                                url: '@Url.Action("SalvarAudio")',
-                                data: {
-                                    'base64': reader.result
-                                }
-                            })
-                            load()
-    					}
-    				}
-    			}, err => {
-    				alert('Você deve permitir o audio')
-    			})
-    			$('#btn').click(function(){
-    				if($(this).text() === 'Novo Audio'){
-    					mediaRecorder.start()
-                        $(this).text('Parar')
-    				}
-    				else{
-    					mediaRecorder.stop()
-                        $(this).text('Novo Audio')
-    				}
-    			})
-    	})
-    </script>
+
+    var hour = new Date();
+    var isMarch = false;
+    var acumularTime = 0;
+    let mediaRecorder;
+
+    function zera() {
+        acumularTime = 0;
+        pantalla.innerHTML = "00 : 00";
+        pantalla.style.visibility = "hidden";;
+    }
+
+    function stop() {
+        mediaRecorder.stop();
+        if (isMarch == true) {
+            clearInterval(control);
+            isMarch = false;
+        }
+        zera()
+        document.getElementById("btnStop").style.visibility = "hidden";
+    }
+
+        function start() {
+
+            if ($('#btnStart').text() == 'Save') {
+                mediaRecorder.stop();
+                if (isMarch == true) {
+                    clearInterval(control);
+                    isMarch = false;
+                }
+
+                document.getElementById("btnStop").style.visibility = "hidden";
+            }
+            else {
+
+                navigator
+                    .mediaDevices
+                    .getUserMedia({ audio: true })
+                    .then(stream => {
+                        steam = stream;
+                        mediaRecorder = new MediaRecorder(stream)
+                        let chunks = []
+                        mediaRecorder.ondataavailable = data => {
+                            chunks.push(data.data)
+                        }
+
+                        mediaRecorder.onstop = () => {
+                            stream.getTracks().forEach(track => track.stop());
+                            $('#btnStart').text('Novo Audio');
+                            const blob = new Blob(chunks, { type: 'audio/ogg; code=opus' })
+                            const reader = new window.FileReader()
+                            reader.readAsDataURL(blob)
+                            reader.onloadend = () => {
+                                //Colocar o POST no comando abaixo
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Url.Action("SalvarAudio")',
+                                    data: {
+                                        'base64': reader.result,
+                                        'duracao': document.getElementById('screen').textContent,
+                                        //Pega o horario do cliente
+                                        'hora': hour.getHours() + " : " + hour.getMinutes()
+                                    }
+                                })
+                                zera()
+                                load()
+
+                            }
+                        }
+                        mediaRecorder.start();
+                        if (isMarch == false) {
+                            timeInicial = new Date();
+                            control = setInterval(cronometro, 10);
+                            isMarch = true;
+                        }
+                        pantalla.style.visibility = "visible";
+                        $('#btnStart').text('Save');
+                        document.getElementById("btnStop").style.visibility = "visible";
+
+                    }, err => {
+                        alert('Voce deve permitir o audio')
+                    });
+            }
+    }
+
+    function tocaAudio(id) {
+
+        $.ajax({
+            type: 'GET',
+            url:'@Url.Action("TocarAudio", "Audio")',
+            data: {
+                id: id
+            },
+           success: function (result) {
+               const audio = document.createElement('audio')
+               audio.src = result
+               audio.controls = true
+               document.getElementById(id).setAttribute('src', result);
+            }
+        })
+    }
+
+
+</script>
 }

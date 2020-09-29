@@ -132,9 +132,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202009232058247_Initial.cs" />
-    <Compile Include="Migrations\202009232058247_Initial.designer.cs">
-      <DependentUpon>202009232058247_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202009291442283_Timers.cs" />
+    <Compile Include="Migrations\202009291442283_Timers.designer.cs">
+      <DependentUpon>202009291442283_Timers.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Audio.cs" />
@@ -189,8 +189,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202009232058247_Initial.resx">
-      <DependentUpon>202009232058247_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202009291442283_Timers.resx">
+      <DependentUpon>202009291442283_Timers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
